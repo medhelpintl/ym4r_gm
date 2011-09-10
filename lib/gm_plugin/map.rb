@@ -39,7 +39,7 @@ module Ym4r
         a << "<script src=\"http://www.google.com/uds/api?file=uds.js&amp;v=1.0\" type=\"text/javascript\"></script>" if options[:local_search]
         a << "<script src=\"http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js\" type=\"text/javascript\"></script>\n" if options[:local_search]
         a << "<style type=\"text/css\">@import url(\"http://www.google.com/uds/css/gsearch.css\");@import url(\"http://www.google.com/uds/solutions/localsearch/gmlocalsearch.css\");}</style>" if options[:local_search]
-        a
+        a.html_safe
       end
      
       #Outputs the <div id=...></div> which has been configured to contain the map. You can pass <tt>:width</tt> and <tt>:height</tt> as options to output this in the style attribute of the DIV element (you could also achieve the same effect by putting the dimension info into a CSS or using the instance method GMap#header_width_height). You can aslo pass <tt>:class</tt> to set the classname of the div.
@@ -62,12 +62,12 @@ module Ym4r
         if options.has_key?(:class)
           attributes += options.keys.map {|opt| "#{opt}=\"#{options[opt]}\"" }.join(" ")
         end
-        "<div #{attributes}>#{options[:content].to_s}</div>"
+        "<div #{attributes}>#{options[:content].to_s}</div>".html_safe
       end
 
       #Outputs a style declaration setting the dimensions of the DIV container of the map. This info can also be set manually in a CSS.
       def header_width_height(width,height)
-        "<style type=\"text/css\">\n##{@container} { height: #{height}px;\n  width: #{width}px;\n}\n</style>"
+        "<style type=\"text/css\">\n##{@container} { height: #{height}px;\n  width: #{width}px;\n}\n</style>".html_safe
       end
 
       #Records arbitrary JavaScript code and outputs it during initialization inside the +load+ function.
@@ -288,12 +288,12 @@ module Ym4r
           html << "<style>html, body {width: 100%; height: 100%} body {margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px} ##{@container} {margin:  0px;} </style>"
         end
         
-        html
+        html.html_safe
       end
       
       #Outputs in JavaScript the creation of a GMap2 object 
       def create
-        "new GMap2(document.getElementById(\"#{@container}\"))"
+        "new GMap2(document.getElementById(\"#{@container}\"))".html_safe
       end
     end
   end
